@@ -4,7 +4,7 @@
 <%@ page import = "java.sql.Connection" %>
 <%@ page import = "java.sql.Statement" %>
 <%@ page import = "java.sql.SQLException" %>
-
+<%-- <%@ page import = "java.sql.PreparedStatement" %> --%>
 <%
 	request.setCharacterEncoding("utf-8");
 	
@@ -17,6 +17,7 @@
 	
 	Connection conn = null;
 	Statement stmt = null;
+	//PreparedStatement pstmt = null;
 	
 	try {
 		String jdbcDriver = "jdbc:mysql://localhost:3306/chap14?" +
@@ -27,9 +28,16 @@
 		String query = "update MEMBER set NAME = '"+name+"' "+
 					   "where MEMBERID = '"+memberID+"'";
 		
+		//String query2 = "update MEMBER set NAME =? where MEMBERID =?";
+		//pstmt.setString(1,name);
+		//pstmt.setString(2,memberID);
+		
 		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 		stmt = conn.createStatement();
+		//pstmt = conn.prepareStatement(query2);
+		
 		updateCount = stmt.executeUpdate(query);
+		//updateCount = pstmt.executeUpdate();
 	} finally {
 		if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
 		if (conn != null) try { conn.close(); } catch(SQLException ex) {}
